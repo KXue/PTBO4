@@ -1,7 +1,7 @@
 const config = {
     renderer: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: CONSTANTS.width,
+    height: CONSTANTS.height,
     parent: 'game-div'
 };
 

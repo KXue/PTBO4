@@ -1,7 +1,7 @@
 const titleState = {
     create: function(){
         console.log('title');
-        let startButton = this.add.image(400, 300, 'hand');
+        let startButton = this.add.image(game.width * 0.5, game.height * 0.5, 'hand');
         startButton.anchor.set(0.5, 0.5);
         startButton.inputEnabled = true;
         startButton.events.onInputDown.add(this.onStartButtonPressed, this);

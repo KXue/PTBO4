@@ -1,6 +1,12 @@
 const loadState = {
     preload: function(){
-        this.load.image('hand', 'assets/hand.png')
+        this.load.image('hand', 'assets/images/hand.png');
+        this.load.image('Cross', 'assets/images/Cross.png');
+        this.load.image('I', 'assets/images/I.png');
+        this.load.image('T', 'assets/images/T.png');
+        this.load.image('FBI', 'assets/images/FBI.png');
+        this.load.image('Roger', 'assets/images/JollyRoger.png');
+
         //load sprites
     },
     create: function(){
