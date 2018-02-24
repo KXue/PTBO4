@@ -3,9 +3,11 @@ class Load extends Phaser.Scene{
         super({key: 'load'});
     }
     preload(){
+        this.load.image('hand', 'assets/hand.png')
         //load sprites
     }
     create(){
+        console.log('load');
         this.scene.start('title');
     }
 }

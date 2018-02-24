@@ -8,6 +8,7 @@ class Boot extends Phaser.Scene{
     }
     create(){
         //show splash
+        console.log('boot');
         this.splashImage = this.add.image(400, 300, 'splash');
         this.timedEvent = this.time.delayedCall(3000, ()=>{
             this.scene.start('load');
