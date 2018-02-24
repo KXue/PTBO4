@@ -1,11 +1,29 @@
+const testGrid = [
+    'R', 'O', 'I', 'I', 'L',
+    'T', 'L', 'L', 'O', 'C',
+    'L', 'I', 'T', 'I', 'C',
+    'C', 'L', 'C', 'I', 'T',
+    'L', 'T', 'O', 'C', 'F'
+];
+
+const gridMap = {
+    F: 'FBI',
+    R: 'Roger',
+    T: 'perpendicularTails',
+    L: 'rightAngleTails',
+    I: 'lineTails',
+    C: 'crossTails',
+    O: 'oneTail'
+};
+
 const mainState = {
     nodeGrid: null,
     create: function(){
         console.log('main');
-        this.populateGrid();
+        this.populateGrid(testGrid);
     },
 
-    populateGrid: function(){
+    fillGrid: function(key){
         if(this.nodeGrid === null){
             this.nodeGrid = this.add.group();
         }
@@ -18,10 +36,31 @@ const mainState = {
                 const cellX = startX + col * CONSTANTS.cellSize;
                 const cellY = startY + row * CONSTANTS.cellSize;
                 
-                const cell = this.nodeGrid.create(cellX, cellY, 'Roger');
+                const cell = this.nodeGrid.create(cellX, cellY, key);
 
                 this.scaleCell(cell);         
             }
+        }
+    },
+
+    populateGrid: function(gridData){
+        if(this.nodeGrid === null){
+            this.nodeGrid = this.add.group();
+        }
+
+        const startX = (game.width  - CONSTANTS.gridWidth * CONSTANTS.cellSize) * 0.5;
+        const startY = (game.height - CONSTANTS.gridHeight * CONSTANTS.cellSize) * 0.5;
+
+        for(let i = 0; i < gridData.length; i++){
+            const col = i % CONSTANTS.gridWidth;
+            const row =  Math.floor(i / CONSTANTS.gridWidth);
+
+            const cellX = startX + col * CONSTANTS.cellSize;
+            const cellY = startY + row * CONSTANTS.cellSize;
+            
+            const cell = this.nodeGrid.create(cellX, cellY, gridMap[gridData[i]]);
+
+            this.scaleCell(cell);         
         }
     },
 
