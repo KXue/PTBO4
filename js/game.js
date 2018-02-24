@@ -4,7 +4,7 @@ const config = {
     height: 600,
     backgroundColor: '#000000',
     parent: 'game-div',
-    scene: []
+    scene: [Boot, Load, Title, Main]
 };
 
 const game = new Phaser.Game(config);
