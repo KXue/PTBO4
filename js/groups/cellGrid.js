@@ -37,7 +37,7 @@ const CONNECTIONS = {
 const cellGrid = {
     grid: null,
     mapData: null,
-    enemy: null,
+    enemies: [],
     player: null,
     bitCoin: null,
     winCallBack: null,
@@ -69,7 +69,10 @@ const cellGrid = {
         this.grid = null;
         this.mapData = null;
         this.player.destroy();
-        this.enemy.destroy();
+        for(let i = 0; i < this.enemies.length; i++){
+            this.enemies[i].destroy();
+        }
+        this.enemies = [];
         this.bitCoin.destroy();
         this.player = null;
         this.enemy = null;
@@ -94,13 +97,28 @@ const cellGrid = {
 
             this.spawnCell(cellX, cellY, mapData.level[i]);
         }
+        let enemyIndexArray = [];
 
-        let enemyRowCol = this.mapData.getRowCol(this.mapData.fBI);
+        if(this.mapData.fBI.constructor !== Array){
+            enemyIndexArray.push(this.mapData.fBI);
+        }
+        else{
+            enemyIndexArray = this.mapData.fBI;
+        }
+
+        for(let i = 0; i < enemyIndexArray.length; i++){
+            let enemyRowCol = this.mapData.getRowCol(enemyIndexArray[i]);
+            enemyRowCol.row *= this.maxCellSize;
+            enemyRowCol.col *= this.maxCellSize;
+            const enemy = game.add.image(startX + enemyRowCol.col, startY + enemyRowCol.row, 'FBI')
+            this.enemies.push(enemy);
+            enemy.anchor.set(0.5, 0.5);
+            enemy.inputEnabled = false;
+            this.squareScaleActor(enemy, this.maxCellSize);
+        }
+
         let playerRowCol = this.mapData.getRowCol(this.mapData.roger);
         let bitCoinRowCol = this.mapData.getRowCol(this.mapData.bitCoin);
-
-        enemyRowCol.row *= this.maxCellSize;
-        enemyRowCol.col *= this.maxCellSize;
 
         playerRowCol.row *= this.maxCellSize;
         playerRowCol.col *= this.maxCellSize;
@@ -108,19 +126,15 @@ const cellGrid = {
         bitCoinRowCol.row *= this.maxCellSize;
         bitCoinRowCol.col *= this.maxCellSize;
 
-        this.enemy = game.add.image(startX + enemyRowCol.col, startY + enemyRowCol.row, 'FBI');
         this.player = game.add.image(startX + playerRowCol.col, startY + playerRowCol.row, 'Roger');
         this.bitCoin = game.add.image(startX + bitCoinRowCol.col, startY + bitCoinRowCol.row, 'bitcoin');
 
-        this.enemy.anchor.set(0.5, 0.5);
         this.player.anchor.set(0.5, 0.5);
         this.bitCoin.anchor.set(0.5, 0.5);
 
-        this.enemy.inputEnabled = false;
         this.player.inputEnabled = false;
         this.bitCoin.inputEnabled = false;
 
-        this.squareScaleActor(this.enemy, this.maxCellSize);
         this.squareScaleActor(this.player, this.maxCellSize);
         this.squareScaleActor(this.bitCoin, this.maxCellSize);
     },
@@ -153,7 +167,6 @@ const cellGrid = {
                 }, this);
             newCell.onInputUp.add(
                 (cell)=>{}, this);
-
 
             newCell._nodeType = key;
             return newCell;
@@ -251,13 +264,15 @@ const cellGrid = {
                 foundBitCoin = true;
             }
         });
-        this.floodFillFrom(this.mapData.fBI, (cell)=>{
-            cell.tint = 0x0090ff;
-            cell._isFBI = true;
-            if(cell._isPirate){
-                foundFBI = true;
-            }
-        });
+        for(let i = 0; i < this.mapData.fBI.length; i++){
+            this.floodFillFrom(this.mapData.fBI[i], (cell)=>{
+                cell.tint = 0x0090ff;
+                cell._isFBI = true;
+                if(cell._isPirate){
+                    foundFBI = true;
+                }
+            });
+        }
         if(foundFBI){
             this.lossCallBack();
         }
