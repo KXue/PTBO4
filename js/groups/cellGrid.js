@@ -132,7 +132,7 @@ const cellGrid = {
                 newCell.angle += 90;
                 this.evaluateGrid();
                 if(!this.cellTapSound.isPlaying){
-                    this.cellTapSound.play('', 0, 1.5);
+                    this.cellTapSound.play('', 0, 1);
                 }
             });
 
