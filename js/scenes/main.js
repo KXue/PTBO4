@@ -37,10 +37,10 @@ const mainState = {
         }, this);
         console.log(button);
     },
-    shutdown:function (){
+    shutdown: function(){
         this.cellGrid.destroy();
         this.cellGrid = null;
-    }
+    },
 }
 
 

@@ -37,7 +37,9 @@ const CONNECTIONS = {
 const cellGrid = {
     grid: null,
     mapData: null,
-
+    enemy: null,
+    player: null,
+    bitCoin: null,
     createFromMapData: function(map){
         this.mapData = map;
         if(this.grid !== null){
@@ -46,12 +48,19 @@ const cellGrid = {
             this.grid = game.add.group();
         }
         this.populateGrid(map);
+        this.rotateCells(map.rotations);
     },
 
     destroy: function(){
         this.grid.destroy();
         this.grid = null;
         this.mapData = null;
+        this.player.destroy();
+        this.enemy.destroy();
+        this.bitcoin.destroy();
+        this.player = null;
+        this.enemy = null;
+        this.bitCoin = null;
     },
 
     populateGrid: function(mapData){
@@ -69,15 +78,43 @@ const cellGrid = {
             const cellY = startY + rowCol.row * CONSTANTS.cellSize;
 
             this.spawnCell(cellX, cellY, mapData.level[i]);
-
         }
+
+        let enemyRowCol = this.mapData.getRowCol(this.mapData.fBI);
+        let playerRowCol = this.mapData.getRowCol(this.mapData.roger);
+        let bitCoinRowCol = this.mapData.getRowCol(this.mapData.bitCoin);
+
+        enemyRowCol.row *= CONSTANTS.cellSize;
+        enemyRowCol.col *= CONSTANTS.cellSize;
+
+        playerRowCol.row *= CONSTANTS.cellSize;
+        playerRowCol.col *= CONSTANTS.cellSize;
+
+        bitCoinRowCol.row *= CONSTANTS.cellSize;
+        bitCoinRowCol.col *= CONSTANTS.cellSize;
+
+        this.enemy = game.add.image(startX + enemyRowCol.col, startY + enemyRowCol.row, 'FBI');
+        this.player = game.add.image(startX + playerRowCol.col, startY + playerRowCol.row, 'Roger');
+        this.bitCoin = game.add.image(startX + bitCoinRowCol.col, startY + bitCoinRowCol.row, 'bitcoin');
+
+        this.enemy.anchor.set(0.5, 0.5);
+        this.player.anchor.set(0.5, 0.5);
+        this.bitCoin.anchor.set(0.5, 0.5);
+
+        this.enemy.inputEnabled = false;
+        this.player.inputEnabled = false;
+        this.bitCoin.inputEnabled = false;
+
+        this.squareScaleActor(this.enemy, CONSTANTS.cellSize * 0.5);
+        this.squareScaleActor(this.player, CONSTANTS.cellSize * 0.5);
+        this.squareScaleActor(this.bitCoin, CONSTANTS.cellSize * 0.5);
     },
 
     spawnCell:function(cellX, cellY, key){
         if(this.grid !== null){
 
             const newCell = game.add.button(cellX, cellY, gridToKey[key], ()=>{
-                newCell.angle+=90;
+                newCell.angle += 90;
                 this.evaluateGrid();
             });
 
@@ -106,13 +143,20 @@ const cellGrid = {
     },
 
     scaleCell: function(cell){
-        const scaleFactorX = CONSTANTS.cellSize / cell.width
-        const scaleFactorY = CONSTANTS.cellSize / cell.height
+        const scaleFactorX = CONSTANTS.cellSize / cell.width;
+        const scaleFactorY = CONSTANTS.cellSize / cell.height;
 
         cell._scaleFactorX = scaleFactorX;
         cell._scaleFactorY = scaleFactorY;
 
         cell.scale.set(scaleFactorX, scaleFactorY);
+    },
+
+    squareScaleActor: function(actor, newSize){
+        const scaleFactorX = newSize / actor.width;
+        const scaleFactorY = newSize / actor.height;
+
+        actor.scale.setTo(scaleFactorX, scaleFactorY);
     },
 
     floodFillFrom: function(index, callBack){
@@ -210,5 +254,10 @@ const cellGrid = {
             cell._isFBI = false;
             cell.tint = 0xffffff;
         }
-    }
+    },
+    rotateCells: function(rotations){
+        for(let i = 0; i < rotations.length; i++){
+            this.grid.getAt(rotations[i].index).angle = rotations[i].angle;
+        }
+    },
 }
