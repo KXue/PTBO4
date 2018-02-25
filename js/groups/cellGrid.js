@@ -50,9 +50,16 @@ const cellGrid = {
         }else{
             this.grid = game.add.group();
         }
-        // this.calculateMaxCellSize(map);
+        this.calculateMaxCellSize(map, game.width * 0.9, game.height * 0.9);
         this.populateGrid(map);
         this.rotateCells(map.rotations);
+    },
+
+    calculateMaxCellSize: function(map, screenWidth, screenHeight){
+        const maxWidth = screenWidth / map.width;
+        const maxHeight = screenHeight / map.height;
+
+        this.maxCellSize = Math.min(maxWidth, maxHeight);
     },
 
     destroy: function(){
@@ -72,14 +79,14 @@ const cellGrid = {
             this.grid.removeAll(true);
         }
 
-        const startX = (game.width  - (mapData.width - 1) * CONSTANTS.cellSize) * 0.5;
-        const startY = (game.height - (mapData.height - 1) * CONSTANTS.cellSize) * 0.5;
+        const startX = (game.width  - (mapData.width - 1) * this.maxCellSize) * 0.5;
+        const startY = (game.height - (mapData.height - 1) * this.maxCellSize) * 0.5;
 
         for(let i = 0; i < mapData.level.length; i++){
             const rowCol = mapData.getRowCol(i);
 
-            const cellX = startX + rowCol.col * CONSTANTS.cellSize;
-            const cellY = startY + rowCol.row * CONSTANTS.cellSize;
+            const cellX = startX + rowCol.col * this.maxCellSize;
+            const cellY = startY + rowCol.row * this.maxCellSize;
 
             this.spawnCell(cellX, cellY, mapData.level[i]);
         }
@@ -88,14 +95,14 @@ const cellGrid = {
         let playerRowCol = this.mapData.getRowCol(this.mapData.roger);
         let bitCoinRowCol = this.mapData.getRowCol(this.mapData.bitCoin);
 
-        enemyRowCol.row *= CONSTANTS.cellSize;
-        enemyRowCol.col *= CONSTANTS.cellSize;
+        enemyRowCol.row *= this.maxCellSize;
+        enemyRowCol.col *= this.maxCellSize;
 
-        playerRowCol.row *= CONSTANTS.cellSize;
-        playerRowCol.col *= CONSTANTS.cellSize;
+        playerRowCol.row *= this.maxCellSize;
+        playerRowCol.col *= this.maxCellSize;
 
-        bitCoinRowCol.row *= CONSTANTS.cellSize;
-        bitCoinRowCol.col *= CONSTANTS.cellSize;
+        bitCoinRowCol.row *= this.maxCellSize;
+        bitCoinRowCol.col *= this.maxCellSize;
 
         this.enemy = game.add.image(startX + enemyRowCol.col, startY + enemyRowCol.row, 'FBI');
         this.player = game.add.image(startX + playerRowCol.col, startY + playerRowCol.row, 'Roger');
@@ -109,9 +116,9 @@ const cellGrid = {
         this.player.inputEnabled = false;
         this.bitCoin.inputEnabled = false;
 
-        this.squareScaleActor(this.enemy, CONSTANTS.cellSize * 0.5);
-        this.squareScaleActor(this.player, CONSTANTS.cellSize * 0.5);
-        this.squareScaleActor(this.bitCoin, CONSTANTS.cellSize * 0.5);
+        this.squareScaleActor(this.enemy, this.maxCellSize);
+        this.squareScaleActor(this.player, this.maxCellSize);
+        this.squareScaleActor(this.bitCoin, this.maxCellSize);
     },
 
     spawnCell:function(cellX, cellY, key){
@@ -147,8 +154,8 @@ const cellGrid = {
     },
 
     scaleCell: function(cell){
-        const scaleFactorX = CONSTANTS.cellSize / cell.width;
-        const scaleFactorY = CONSTANTS.cellSize / cell.height;
+        const scaleFactorX = this.maxCellSize / cell.width;
+        const scaleFactorY = this.maxCellSize / cell.height;
 
         cell._scaleFactorX = scaleFactorX;
         cell._scaleFactorY = scaleFactorY;
