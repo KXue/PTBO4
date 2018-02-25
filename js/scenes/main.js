@@ -24,12 +24,12 @@ const gridToKey = {
 //clockwise from 12 o clock. Matches images
 const CONNECTIONS = {
     T:[
-        new Phaser.Point(0, -1), 
+        new Phaser.Point(0, -1),
         new Phaser.Point(1, 0),
         new Phaser.Point(0, 1)
     ],
     L:[
-        new Phaser.Point(0, -1), 
+        new Phaser.Point(0, -1),
         new Phaser.Point(1, 0)
     ],
     I:[
@@ -42,7 +42,7 @@ const CONNECTIONS = {
         new Phaser.Point(0, 1),
         new Phaser.Point(-1, 0)
     ],
-    O:[        
+    O:[
         new Phaser.Point(0, -1),
     ]
 };
@@ -69,7 +69,7 @@ const mainState = {
 
             const cellX = startX + col * CONSTANTS.cellSize;
             const cellY = startY + row * CONSTANTS.cellSize;
-            
+
             this.spawnCell(cellX, cellY, gridData[i]);
 
         }
