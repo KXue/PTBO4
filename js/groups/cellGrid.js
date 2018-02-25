@@ -12,13 +12,19 @@ const cellGrid = {
         this.populateGrid(map);
     },
 
+    destroy: function(){
+        this.grid.destroy();
+        this.grid = null;
+        this.mapData = null;
+    },
+
     populateGrid: function(mapData){
         if(this.grid !== null && this.grid.length > 0){
             this.grid.removeAll(true);
         }
 
-        const startX = (game.width  - mapData.width * CONSTANTS.cellSize) * 0.5;
-        const startY = (game.height - mapData.height * CONSTANTS.cellSize) * 0.5;
+        const startX = (game.width  - (mapData.width - 1) * CONSTANTS.cellSize) * 0.5;
+        const startY = (game.height - (mapData.height - 1) * CONSTANTS.cellSize) * 0.5;
 
         for(let i = 0; i < mapData.level.length; i++){
             const rowCol = mapData.getRowCol(i);
@@ -42,11 +48,11 @@ const cellGrid = {
             newCell.anchor.setTo(0.5, 0.5);
             newCell.onInputOver.add(
                 (cell)=>{
-                    game.add.tween(cell.scale).to({ x: cell.scale.x + 0.1, y: cell.scale.y + 0.1}, 100, Phaser.Easing.Cubic.Out, true, 10);
+                    game.add.tween(cell.scale).to({ x: cell.scale.x+0.02, y: cell.scale.y + 0.02}, 50, Phaser.Easing.Cubic.Out, true, 10);
                 }, this);
             newCell.onInputOut.add(
                 (cell)=>{
-                    game.add.tween(cell.scale).to({ x: cell._scaleFactorX, y: cell._scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
+                    game.add.tween(cell.scale).to({ x: cell._scaleFactorX, y: cell._scaleFactorY}, 50, Phaser.Easing.Cubic.Out, true, 10);
                 }, this);
             newCell.onInputUp.add(
                 (cell)=>{}, this);

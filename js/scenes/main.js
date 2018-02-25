@@ -38,12 +38,12 @@ const gridToKey = {
 //clockwise from 12 o clock. Matches images
 const CONNECTIONS = {
     T:[
-        new Phaser.Point(0, -1), 
+        new Phaser.Point(0, -1),
         new Phaser.Point(1, 0),
         new Phaser.Point(0, 1)
     ],
     L:[
-        new Phaser.Point(0, -1), 
+        new Phaser.Point(0, -1),
         new Phaser.Point(1, 0)
     ],
     I:[
@@ -56,7 +56,7 @@ const CONNECTIONS = {
         new Phaser.Point(0, 1),
         new Phaser.Point(-1, 0)
     ],
-    O:[        
+    O:[
         new Phaser.Point(0, -1),
     ]
 };
@@ -68,18 +68,15 @@ const mainState = {
         this.cellGrid = cellGrid;
         this.cellGrid.createFromMapData(testLevel);
         this.cellGrid.floodFillFrom(0, (cell)=>{cell.tint = 0xff0000});
+        let button = this.add.button(16, 16, 'back', ()=>{
+            this.state.start('title');
+        }, this);
+        console.log(button);
     },
-
-    up: function(cell){
-
-    },
-    over: function(cell){
-    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
-    },
-    out: function(cell){
-    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
-    },
-
+    shutdown:function (){
+        this.cellGrid.destroy();
+        this.cellGrid = null;
+    }
 }
 
 

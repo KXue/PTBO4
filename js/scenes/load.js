@@ -9,6 +9,8 @@ const loadState = {
         this.load.image('oneTail', 'assets/images/oneTail.png');
         this.load.image('perpendicularTails', 'assets/images/perpendicularTails.png');
         this.load.image('rightAngleTails', 'assets/images/rightAngleTails.png');
+        
+        this.load.image('back', 'assets/images/arrow_back_white_36x36.png');
         //load sprites
     },
     create: function(){
