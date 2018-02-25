@@ -67,7 +67,7 @@ const cellGrid = {
 
             const cellX = startX + rowCol.col * CONSTANTS.cellSize;
             const cellY = startY + rowCol.row * CONSTANTS.cellSize;
-            
+
             this.spawnCell(cellX, cellY, mapData.level[i]);
 
         }
@@ -190,7 +190,7 @@ const cellGrid = {
             }
         });
         this.floodFillFrom(this.mapData.fBI, (cell)=>{
-            cell.tint = 0x0000ff;
+            cell.tint = 0x0090ff;
             cell._isFBI = true;
             if(cell._isPirate){
                 foundFBI = true;
@@ -212,4 +212,3 @@ const cellGrid = {
         }
     }
 }
-
