@@ -61,6 +61,7 @@ const mainState = {
 
             const cell = game.add.button(cellX, cellY, gridMap[gridData[i]], ()=>{cell.angle +=90;});
             this.nodeGrid.add(cell);
+            cell.anchor.setTo(0.5, 0.5);
             cell.onInputOver.add(this.over, this);
             cell.onInputOut.add(this.out, this);
             cell.onInputUp.add(this.up, this);
@@ -81,10 +82,10 @@ const mainState = {
 
     },
     over: function(cell){
-    this.add.tween(cell.scale).to({ x: 1.2, y: 1.2}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
     },
     out: function(cell){
-    this.add.tween(cell.scale).to({ x: 1, y: 1}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
     },
 
 
