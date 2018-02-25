@@ -75,7 +75,6 @@ const cellGrid = {
         this.enemies = [];
         this.bitCoin.destroy();
         this.player = null;
-        this.enemy = null;
         this.bitCoin = null;
         this.cellTapSound.destroy();
         this.cellTapSound = null;
@@ -105,6 +104,7 @@ const cellGrid = {
         else{
             enemyIndexArray = this.mapData.fBI;
         }
+
 
         for(let i = 0; i < enemyIndexArray.length; i++){
             let enemyRowCol = this.mapData.getRowCol(enemyIndexArray[i]);
@@ -144,10 +144,10 @@ const cellGrid = {
 
             const newCell = game.add.button(cellX, cellY, gridToKey[key], ()=>{
                 newCell.angle += 90;
-                this.evaluateGrid();
                 if(!this.cellTapSound.isPlaying){
                     this.cellTapSound.play('', 0, 1);
                 }
+                this.evaluateGrid();
             });
 
             newCell.anchor.setTo(0.5, 0.5);
@@ -264,8 +264,15 @@ const cellGrid = {
                 foundBitCoin = true;
             }
         });
-        for(let i = 0; i < this.mapData.fBI.length; i++){
-            this.floodFillFrom(this.mapData.fBI[i], (cell)=>{
+        let enemyIndexArray = [];
+        if(this.mapData.fBI.constructor !== Array){
+            enemyIndexArray.push(this.mapData.fBI);
+        }
+        else{
+            enemyIndexArray = this.mapData.fBI;
+        }
+        for(let i = 0; i < enemyIndexArray.length; i++){
+            this.floodFillFrom(enemyIndexArray[i], (cell)=>{
                 cell.tint = 0x0090ff;
                 cell._isFBI = true;
                 if(cell._isPirate){

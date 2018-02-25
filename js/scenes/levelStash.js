@@ -10,7 +10,7 @@ const tutorialOne = {
     // rotation: {index, angle}
     rotations: [],
     roger: 0,
-    fBI: [11,10],
+    fBI: [11],
     bitCoin: 3,
 
     getIndex: function(row, col){
