@@ -52,8 +52,7 @@ const mainState = {
     create: function(){
         console.log('main');
         this.populateGrid(testLevel.map);
-        this.floodFillFrom(0, 0);
-
+        this.floodFillFrom(0);
     },
 
     populateGrid: function(gridData){
@@ -72,17 +71,29 @@ const mainState = {
             const cellY = startY + row * CONSTANTS.cellSize;
             
             this.spawnCell(cellX, cellY, gridData[i]);
+
         }
     },
 
     spawnCell:function(cellX, cellY, key){
         if(this.nodeGrid !== null){
-            const cell = this.nodeGrid.create(cellX, cellY, gridToKey[key]);
+            const cell = game.add.button(cellX, cellY, gridToKey[key], ()=>{
+                cell.angle +=90;
+                this.floodFillFrom(0);
+            });
+            this.nodeGrid.add(cell);
+            cell.anchor.setTo(0.5, 0.5);
+            cell.onInputOver.add(this.over, this);
+            cell.onInputOut.add(this.out, this);
+            cell.onInputUp.add(this.up, this);
+
             this.scaleCell(cell);
+
             cell._nodeType = key;
             return cell;
         }
     },
+
     scaleCell: function(cell){
         const scaleFactorX = CONSTANTS.cellSize / cell.width
         const scaleFactorY = CONSTANTS.cellSize / cell.height
@@ -90,10 +101,12 @@ const mainState = {
         cell.scale.set(scaleFactorX, scaleFactorY);
     },
 
-    floodFillFrom: function(row, col){
-        let unFilled = [CONSTANTS.getIndex(row, col)];
+    floodFillFrom: function(index){
+        let unFilled = [index];
         let visited = new Set();
-
+        for(let i = 0; i < this.nodeGrid.length; i++){
+            this.nodeGrid.getAt(i).tint = 0xffffff;
+        }
         while(unFilled.length > 0){
             const currentIndex = unFilled.shift();
             visited.add(currentIndex);
@@ -107,6 +120,7 @@ const mainState = {
             this.nodeGrid.getAt(currentIndex).tint = 0xff0000;
         }
     },
+
     getConnections: function(index){
         const potentialConnections = this.getPotentialConnections(index);
         const rowCol = CONSTANTS.getRowCol(index);
@@ -124,18 +138,21 @@ const mainState = {
         }
         return connections;
     },
+
     getPotentialConnections: function(index){
         const cell = this.nodeGrid.getAt(index);
         const cellConnections = CONNECTIONS[cell._nodeType];
         const cellRotation = cell.rotation;
+
         let potentialConnections = [];
 
         for(let i = 0; i < cellConnections.length; i++){
-            const potentialConnection = Phaser.Point.rotate(cellConnections[i], 0, 0, cellRotation).round();
+            const potentialConnection = Phaser.Point.rotate(cellConnections[i].clone(), 0, 0, cellRotation).round();
             potentialConnections.push(potentialConnection);
         }
         return potentialConnections;
     },
+
     doesCellHaveConnection: function(cell, direction){
         let hasConnection = false;
         const potentialConnections = this.getPotentialConnections(this.nodeGrid.getIndex(cell));
@@ -147,9 +164,21 @@ const mainState = {
             }
         }
         return hasConnection;
-    }
+    },
+
+    up: function(cell){
+
+    },
+    over: function(cell){
+    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    },
+    out: function(cell){
+    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    },
 
 }
+
+
 // class Main extends Phaser.Scene{
 //     constructor(){
 //         super({key: 'main'});
