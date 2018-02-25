@@ -31,6 +31,8 @@ const mainState = {
     winSound: null,
     lossSound: null,
     winLossTransitionTime: 1000,
+    levels: [tutorialOne, tutorial2, testLevel],
+    currentLevel: 0,
     create: function(){
         console.log('main');
 
@@ -40,16 +42,26 @@ const mainState = {
 
         let winLossTransitionTimer = game.time.create(true);
         this.cellGrid = cellGrid;
-        this.cellGrid.createFromMapData(testLevel);
+        this.cellGrid.createFromMapData(this.levels[this.currentLevel]);
         this.cellGrid.evaluateGrid();
         cellGrid.winCallBack = ()=>{
             this.BGM.stop();
             this.winSound.play('', 0, 1.2);
-            winLossTransitionTimer.add(this.winLossTransitionTime, ()=>{this.state.start('win');});
+            winLossTransitionTimer.add(this.winLossTransitionTime, ()=>{
+                this.currentLevel+=1;
+                if(this.currentLevel < this.levels.length){
+                    this.state.restart();
+                }
+                else{
+                    this.currentLevel = 0;
+                    this.state.start('win');
+                }
+            });
             winLossTransitionTimer.start();
         };
         cellGrid.lossCallBack = ()=>{
             this.BGM.stop();
+            this.currentLevel = 0;
             this.lossSound.play('', 0, 3);
             winLossTransitionTimer.add(this.winLossTransitionTime, ()=>{this.state.start('loss');});
             winLossTransitionTimer.start();
@@ -62,6 +74,7 @@ const mainState = {
 
         this.BGM.loopFull(0.3);
     },
+
     shutdown: function(){
         this.BGM.destroy();
         this.winSound.destroy();
