@@ -97,6 +97,8 @@ const mainState = {
     scaleCell: function(cell){
         const scaleFactorX = CONSTANTS.cellSize / cell.width
         const scaleFactorY = CONSTANTS.cellSize / cell.height
+        cell._scaleFactorY = scaleFactorY
+        cell._scaleFactorX = scaleFactorX
 
         cell.scale.set(scaleFactorX, scaleFactorY);
     },
@@ -170,10 +172,16 @@ const mainState = {
 
     },
     over: function(cell){
-    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    this.add.tween(cell.scale).to({ x: cell.scale.x+0.02, y: cell.scale.y + 0.02}, 50, Phaser.Easing.Cubic.Out, true, 10);
+    //this.add.tween(cell).to({ alpha: 1}, 1000, Phaser.Easing.Cubic.Out, true, 10);
     },
     out: function(cell){
-    this.add.tween(cell.scale).to({ x: this.scaleCell.scaleFactorX, y: this.scaleCell.scaleFactorY}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    this.add.tween(cell.scale).to({ x: cell._scaleFactorX, y: cell._scaleFactorY}, 50, Phaser.Easing.Cubic.Out, true, 10);
+    //this.add.tween(cell).to({ alpha: 0.6}, 1000, Phaser.Easing.Cubic.Out, true, 10);
+    },
+
+    getRandomNumber: function(min, max){
+      return Math.random() * (max - min) + min;
     },
 
 }
