@@ -3,7 +3,7 @@ const bootState = {
         game.load.image('splash', 'assets/images/splash.jpg');
     },
     create: function () {
-        game.stage.backgroundColor = 0x333333;
+        game.stage.backgroundColor = 0x000000;
         console.log('boot');
         let splashImage = this.add.image(game.width * 0.5, game.height * 0.5, 'splash');
         splashImage.anchor.set(0.5, 0.5);

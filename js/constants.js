@@ -1,6 +1,6 @@
 const CONSTANTS ={
-    width: 960,
-    height: 680,
+    width: window.innerWidth,
+    height: window.innerHeight,
     cellSize: 75,
     gridWidth: 5,
     gridHeight: 5,

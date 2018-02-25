@@ -258,7 +258,7 @@ const cellGrid = {
         let foundBitCoin = false;
         let foundFBI = false;
         this.floodFillFrom(this.mapData.roger, (cell)=>{
-            cell.tint = 0xff0000;
+            cell.tint = 0x87a1FF;
             cell._isPirate = true;
             if(this.mapData.bitCoin == this.grid.getIndex(cell)){
                 foundBitCoin = true;
@@ -273,7 +273,7 @@ const cellGrid = {
         }
         for(let i = 0; i < enemyIndexArray.length; i++){
             this.floodFillFrom(enemyIndexArray[i], (cell)=>{
-                cell.tint = 0x0090ff;
+                cell.tint = 0xff0404;
                 cell._isFBI = true;
                 if(cell._isPirate){
                     foundFBI = true;
