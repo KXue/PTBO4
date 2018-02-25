@@ -27,19 +27,50 @@ const testLevel = {
 
 const mainState = {
     cellGrid: null,
+    BGM:null,
+    winSound: null,
+    lossSound: null,
+    winLossTransitionTime: 1000,
     create: function(){
         console.log('main');
+
+        this.BGM = this.add.audio('BGM');
+        this.winSound = this.add.audio('winSound');
+        this.lossSound = this.add.audio('loseSound');
+
+        let winLossTransitionTimer = game.time.create(true);
         this.cellGrid = cellGrid;
         this.cellGrid.createFromMapData(testLevel);
-        this.cellGrid.evaluateGrid()
+        this.cellGrid.evaluateGrid();
+        cellGrid.winCallBack = ()=>{
+            this.BGM.stop();
+            this.winSound.play('', 0, 1.2);
+            winLossTransitionTimer.add(this.winLossTransitionTime, ()=>{this.state.start('win');});
+            winLossTransitionTimer.start();
+        };
+        cellGrid.lossCallBack = ()=>{
+            this.BGM.stop();
+            this.lossSound.play('', 0, 3);
+            winLossTransitionTimer.add(this.winLossTransitionTime, ()=>{this.state.start('loss');});
+            winLossTransitionTimer.start();
+            
+        };
+
         let button = this.add.button(16, 16, 'back', ()=>{
             this.state.start('title');
         }, this);
-        console.log(button);
-        cellGrid.winCallBack = ()=>{this.state.start('win')};
-        cellGrid.lossCallBack = ()=>{this.state.start('loss')};
+
+        this.BGM.loopFull(0.3);
     },
     shutdown: function(){
+        this.BGM.destroy();
+        this.winSound.destroy();
+        this.lossSound.destroy();
+
+        this.BGM = null;
+        this.winSound = null;
+        this.lossSound = null;
+
         this.cellGrid.destroy();
         this.cellGrid = null;
     },
