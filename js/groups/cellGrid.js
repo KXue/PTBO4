@@ -1,3 +1,39 @@
+const gridToKey = {
+    F: 'FBI',
+    R: 'Roger',
+    T: 'perpendicularTails',
+    L: 'rightAngleTails',
+    I: 'lineTails',
+    C: 'crossTails',
+    O: 'oneTail'
+};
+
+//clockwise from 12 o clock. Matches images
+const CONNECTIONS = {
+    T:[
+        new Phaser.Point(0, -1),
+        new Phaser.Point(1, 0),
+        new Phaser.Point(0, 1)
+    ],
+    L:[
+        new Phaser.Point(0, -1),
+        new Phaser.Point(1, 0)
+    ],
+    I:[
+        new Phaser.Point(0, -1),
+        new Phaser.Point(0, 1)
+    ],
+    C: [
+        new Phaser.Point(0, -1),
+        new Phaser.Point(1, 0),
+        new Phaser.Point(0, 1),
+        new Phaser.Point(-1, 0)
+    ],
+    O:[
+        new Phaser.Point(0, -1),
+    ]
+};
+
 const cellGrid = {
     grid: null,
     mapData: null,
@@ -41,29 +77,16 @@ const cellGrid = {
         if(this.grid !== null){
 
             const newCell = game.add.button(cellX, cellY, gridToKey[key], ()=>{
-                newCell.inputEnabled = false;
-                newCell._rotationTween.start();
+                newCell.angle+=90;
+                this.evaluateGrid();
             });
 
             newCell.anchor.setTo(0.5, 0.5);
             this.scaleCell(newCell);
             this.grid.add(newCell);
 
-            newCell._rotationTween = game.add.tween(newCell).to({angle: newCell.angle + 90}, 100, Phaser.Easing.Cubic.Out, false);
             newCell._expandTween = game.add.tween(newCell.scale).to({ x: newCell.scale.x + 0.02, y: newCell.scale.y + 0.02}, 50, Phaser.Easing.Cubic.Out, false, 10);
             newCell._contractTween = game.add.tween(newCell.scale).to({ x: newCell._scaleFactorX, y: newCell._scaleFactorY}, 50, Phaser.Easing.Cubic.Out, false, 10);
-
-            newCell._rotationTween.onComplete.add(()=>{
-                newCell.inputEnabled = true;
-                newCell._contractTween.start();
-                if(newCell.angle == -180){
-                    newCell.angle = 179;
-                }
-                console.log(newCell.angle);
-                console.log(newCell.angle + 90);
-                newCell._rotationTween.to({angle: newCell.angle + 90}, 500, Phaser.Easing.Cubic.Out, false);
-                this.evaluateGrid();
-            }, this);
 
             newCell.onInputOver.add(
                 (cell)=>{
@@ -156,7 +179,37 @@ const cellGrid = {
     },
 
     evaluateGrid: function(){
-
+        this.resetGrid()
+        let foundBitCoin = false;
+        let foundFBI = false;
+        this.floodFillFrom(this.mapData.roger, (cell)=>{
+            cell.tint = 0xff0000;
+            cell._isPirate = true;
+            if(this.mapData.bitCoin == this.grid.getIndex(cell)){
+                foundBitCoin = true;
+            }
+        });
+        this.floodFillFrom(this.mapData.fBI, (cell)=>{
+            cell.tint = 0x0000ff;
+            cell._isFBI = true;
+            if(cell._isPirate){
+                foundFBI = true;
+            }
+        });
+        if(foundFBI){
+            //lost
+        }
+        else if(foundBitCoin){
+            //won
+        }
+    },
+    resetGrid: function(){
+        for(let i = 0; i < this.grid.length; i++){
+            const cell = this.grid.getAt(i);
+            cell._isPirate = false;
+            cell._isFBI = false;
+            cell.tint = 0xffffff;
+        }
     }
 }
 

@@ -11,7 +11,7 @@ const testLevel = {
     // rotation: {index, angle}
     rotations: [],
     roger: 0,
-    fBI: 12,
+    fBI: 13,
     bitCoin: 24,
 
     getIndex: function(row, col){
@@ -25,49 +25,13 @@ const testLevel = {
     },
 };
 
-const gridToKey = {
-    F: 'FBI',
-    R: 'Roger',
-    T: 'perpendicularTails',
-    L: 'rightAngleTails',
-    I: 'lineTails',
-    C: 'crossTails',
-    O: 'oneTail'
-};
-
-//clockwise from 12 o clock. Matches images
-const CONNECTIONS = {
-    T:[
-        new Phaser.Point(0, -1),
-        new Phaser.Point(1, 0),
-        new Phaser.Point(0, 1)
-    ],
-    L:[
-        new Phaser.Point(0, -1),
-        new Phaser.Point(1, 0)
-    ],
-    I:[
-        new Phaser.Point(0, -1),
-        new Phaser.Point(0, 1)
-    ],
-    C: [
-        new Phaser.Point(0, -1),
-        new Phaser.Point(1, 0),
-        new Phaser.Point(0, 1),
-        new Phaser.Point(-1, 0)
-    ],
-    O:[
-        new Phaser.Point(0, -1),
-    ]
-};
-
 const mainState = {
     cellGrid: null,
     create: function(){
         console.log('main');
         this.cellGrid = cellGrid;
         this.cellGrid.createFromMapData(testLevel);
-        this.cellGrid.floodFillFrom(0, (cell)=>{cell.tint = 0xff0000});
+        this.cellGrid.evaluateGrid()
         let button = this.add.button(16, 16, 'back', ()=>{
             this.state.start('title');
         }, this);
