@@ -29,16 +29,17 @@ const mainState = {
         }
         const startX = (game.width  - CONSTANTS.gridWidth * CONSTANTS.cellSize) * 0.5;
         const startY = (game.height - CONSTANTS.gridHeight * CONSTANTS.cellSize) * 0.5;
-    
+
         for(let row = 0; row < CONSTANTS.gridHeight; row++){
             for(let col = 0; col < CONSTANTS.gridWidth; col++){
 
                 const cellX = startX + col * CONSTANTS.cellSize;
                 const cellY = startY + row * CONSTANTS.cellSize;
-                
-                const cell = this.nodeGrid.create(cellX, cellY, key);
 
-                this.scaleCell(cell);         
+                const cell = game.add.button(cellX, cellY, key, ()=>{console.log("rotate");});
+
+                this.nodeGrid.add(cell);
+                this.scaleCell(cell);
             }
         }
     },
@@ -57,10 +58,15 @@ const mainState = {
 
             const cellX = startX + col * CONSTANTS.cellSize;
             const cellY = startY + row * CONSTANTS.cellSize;
-            
-            const cell = this.nodeGrid.create(cellX, cellY, gridMap[gridData[i]]);
 
-            this.scaleCell(cell);         
+            const cell = game.add.button(cellX, cellY, gridMap[gridData[i]], ()=>{cell.angle +=90;});
+            this.nodeGrid.add(cell);
+            cell.onInputOver.add(this.over, this);
+            cell.onInputOut.add(this.out, this);
+            cell.onInputUp.add(this.up, this);
+
+            this.scaleCell(cell);
+
         }
     },
 
@@ -69,8 +75,23 @@ const mainState = {
         const scaleFactorY = CONSTANTS.cellSize / cell.height
 
         cell.scale.set(scaleFactorX, scaleFactorY);
-    }
+    },
+
+    up: function(cell){
+
+    },
+    over: function(cell){
+    this.add.tween(cell.scale).to({ x: 1.2, y: 1.2}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    },
+    out: function(cell){
+    this.add.tween(cell.scale).to({ x: 1, y: 1}, 100, Phaser.Easing.Cubic.Out, true, 10);
+    },
+
+
+
 }
+
+
 // class Main extends Phaser.Scene{
 //     constructor(){
 //         super({key: 'main'});
