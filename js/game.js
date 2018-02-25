@@ -11,5 +11,7 @@ game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('title', titleState);
 game.state.add('main', mainState);
+game.state.add('win', winState);
+game.state.add('loss', lossState);
 
 game.state.start('boot');

@@ -36,6 +36,8 @@ const mainState = {
             this.state.start('title');
         }, this);
         console.log(button);
+        cellGrid.winCallBack = ()=>{this.state.start('win')};
+        cellGrid.lossCallBack = ()=>{this.state.start('loss')};
     },
     shutdown: function(){
         this.cellGrid.destroy();

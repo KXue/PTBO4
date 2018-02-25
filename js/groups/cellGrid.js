@@ -40,6 +40,9 @@ const cellGrid = {
     enemy: null,
     player: null,
     bitCoin: null,
+    winCallBack: null,
+    lossCallBack: null,
+    maxCellSize: 0,
     createFromMapData: function(map){
         this.mapData = map;
         if(this.grid !== null){
@@ -47,6 +50,7 @@ const cellGrid = {
         }else{
             this.grid = game.add.group();
         }
+        this.calculateMaxCellSize(map);
         this.populateGrid(map);
         this.rotateCells(map.rotations);
     },
@@ -57,7 +61,7 @@ const cellGrid = {
         this.mapData = null;
         this.player.destroy();
         this.enemy.destroy();
-        this.bitcoin.destroy();
+        this.bitCoin.destroy();
         this.player = null;
         this.enemy = null;
         this.bitCoin = null;
@@ -241,10 +245,10 @@ const cellGrid = {
             }
         });
         if(foundFBI){
-            //lost
+            this.lossCallBack();
         }
         else if(foundBitCoin){
-            //won
+            this.winCallBack();
         }
     },
     resetGrid: function(){
