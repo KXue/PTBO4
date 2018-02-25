@@ -41,23 +41,41 @@ const cellGrid = {
         if(this.grid !== null){
 
             const newCell = game.add.button(cellX, cellY, gridToKey[key], ()=>{
-                newCell.angle += 90;
+                newCell.inputEnabled = false;
+                newCell._rotationTween.start();
             });
-            this.grid.add(newCell);
 
             newCell.anchor.setTo(0.5, 0.5);
+            this.scaleCell(newCell);
+            this.grid.add(newCell);
+
+            newCell._rotationTween = game.add.tween(newCell).to({angle: newCell.angle + 90}, 100, Phaser.Easing.Cubic.Out, false);
+            newCell._expandTween = game.add.tween(newCell.scale).to({ x: newCell.scale.x + 0.02, y: newCell.scale.y + 0.02}, 50, Phaser.Easing.Cubic.Out, false, 10);
+            newCell._contractTween = game.add.tween(newCell.scale).to({ x: newCell._scaleFactorX, y: newCell._scaleFactorY}, 50, Phaser.Easing.Cubic.Out, false, 10);
+
+            newCell._rotationTween.onComplete.add(()=>{
+                newCell.inputEnabled = true;
+                newCell._contractTween.start();
+                if(newCell.angle == -180){
+                    newCell.angle = 179;
+                }
+                console.log(newCell.angle);
+                console.log(newCell.angle + 90);
+                newCell._rotationTween.to({angle: newCell.angle + 90}, 500, Phaser.Easing.Cubic.Out, false);
+                this.evaluateGrid();
+            }, this);
+
             newCell.onInputOver.add(
                 (cell)=>{
-                    game.add.tween(cell.scale).to({ x: cell.scale.x+0.02, y: cell.scale.y + 0.02}, 50, Phaser.Easing.Cubic.Out, true, 10);
+                    newCell._expandTween.start();
                 }, this);
             newCell.onInputOut.add(
                 (cell)=>{
-                    game.add.tween(cell.scale).to({ x: cell._scaleFactorX, y: cell._scaleFactorY}, 50, Phaser.Easing.Cubic.Out, true, 10);
+                    newCell._contractTween.start();
                 }, this);
             newCell.onInputUp.add(
                 (cell)=>{}, this);
 
-            this.scaleCell(newCell);
 
             newCell._nodeType = key;
             return newCell;
@@ -137,5 +155,8 @@ const cellGrid = {
         return hasConnection;
     },
 
+    evaluateGrid: function(){
+
+    }
 }
 
