@@ -50,7 +50,7 @@ const cellGrid = {
         }else{
             this.grid = game.add.group();
         }
-        this.calculateMaxCellSize(map);
+        // this.calculateMaxCellSize(map);
         this.populateGrid(map);
         this.rotateCells(map.rotations);
     },
