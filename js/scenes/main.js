@@ -1,6 +1,6 @@
 const testLevel = {
     level:[
-        'C', 'O', 'I', 'L', 'T', 
+        'C', 'O', 'I', 'L', 'T',
         'T', 'C', 'C', 'O', 'C',
         'L', 'I', 'T', 'I', 'C',
         'C', 'L', 'C', 'I', 'T',
@@ -31,7 +31,7 @@ const mainState = {
     winSound: null,
     lossSound: null,
     winLossTransitionTime: 1000,
-    levels: [tutorialOne, tutorial2, testLevel],
+    levels: [level1, level2, level3, level4],
     currentLevel: 0,
     create: function(){
         console.log('main');
@@ -65,7 +65,7 @@ const mainState = {
             this.lossSound.play('', 0, 3);
             winLossTransitionTimer.add(this.winLossTransitionTime, ()=>{this.state.start('loss');});
             winLossTransitionTimer.start();
-            
+
         };
 
         let button = this.add.button(16, 16, 'back', ()=>{
