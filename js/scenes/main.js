@@ -1,6 +1,6 @@
 const testLevel = {
     level:[
-        'C', 'O', 'I', 'L', 'T',
+        'C', 'O', 'I', 'L', 'T', 
         'T', 'C', 'C', 'O', 'C',
         'L', 'I', 'T', 'I', 'C',
         'C', 'L', 'C', 'I', 'T',
@@ -37,10 +37,10 @@ const mainState = {
         }, this);
         console.log(button);
     },
-    shutdown: function(){
+    shutdown:function (){
         this.cellGrid.destroy();
         this.cellGrid = null;
-    },
+    }
 }
 
 
