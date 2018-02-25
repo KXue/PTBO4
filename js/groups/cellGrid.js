@@ -43,6 +43,7 @@ const cellGrid = {
     winCallBack: null,
     lossCallBack: null,
     maxCellSize: 0,
+    cellTapSound: null,
     createFromMapData: function(map){
         this.mapData = map;
         if(this.grid !== null){
@@ -53,6 +54,7 @@ const cellGrid = {
         this.calculateMaxCellSize(map, game.width * 0.9, game.height * 0.9);
         this.populateGrid(map);
         this.rotateCells(map.rotations);
+        this.cellTapSound = game.add.audio('rotateSound');
     },
 
     calculateMaxCellSize: function(map, screenWidth, screenHeight){
@@ -72,6 +74,8 @@ const cellGrid = {
         this.player = null;
         this.enemy = null;
         this.bitCoin = null;
+        this.cellTapSound.destroy();
+        this.cellTapSound = null;
     },
 
     populateGrid: function(mapData){
@@ -127,6 +131,9 @@ const cellGrid = {
             const newCell = game.add.button(cellX, cellY, gridToKey[key], ()=>{
                 newCell.angle += 90;
                 this.evaluateGrid();
+                if(!this.cellTapSound.isPlaying){
+                    this.cellTapSound.play('', 0, 1.5);
+                }
             });
 
             newCell.anchor.setTo(0.5, 0.5);
