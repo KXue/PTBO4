@@ -52,9 +52,9 @@ const cellGrid = {
             this.grid = game.add.group();
         }
         this.calculateMaxCellSize(map, game.width * 0.9, game.height * 0.9);
+        this.cellTapSound = game.add.audio('rotateSound');
         this.populateGrid(map);
         this.rotateCells(map.rotations);
-        this.cellTapSound = game.add.audio('rotateSound');
     },
 
     calculateMaxCellSize: function(map, screenWidth, screenHeight){
@@ -147,12 +147,39 @@ const cellGrid = {
         if(this.grid !== null){
 
             const newCell = game.add.button(cellX, cellY, gridToKey[key], ()=>{
-                newCell.angle += 90;
-                if(!this.cellTapSound.isPlaying){
-                    this.cellTapSound.play('', 0, 1);
-                }
-                this.evaluateGrid();
+                newCell.beginRotation();
+                // newCell.angle += 90;
+                // if(!this.cellTapSound.isPlaying){
+                //     this.cellTapSound.play('', 0, 1);
+                // }
+                // this.evaluateGrid();
             });
+
+            newCell._deltaAngle = 9;
+            newCell._degreesToRotate = 0;
+            newCell._completeRotationCallback = this.evaluateGrid;
+            newCell._completeRotationCallbackContext = this;
+            newCell._tapSound = this.cellTapSound;
+
+            newCell.beginRotation = function(){
+                // this.inputEnabled = false;
+                this._degreesToRotate += 90;
+                if (!this._tapSound.isPlaying) {
+                    this._tapSound.play('', 0, 1);
+                }
+            }
+            newCell.update = function(){
+                if(this._degreesToRotate > 0){
+                    this.angle += this._deltaAngle;
+                    this._degreesToRotate -= this._deltaAngle;
+                    if(Math.round(this._degreesToRotate) < this._deltaAngle){
+                        // this.inputEnabled = true;
+                        this._degreesToRotate = 0;
+                        this.angle = Math.round(this.angle / 90) * 90;
+                        this._completeRotationCallback.apply(this._completeRotationCallbackContext);
+                    }
+                }
+            }
 
             newCell.anchor.setTo(0.5, 0.5);
             this.scaleCell(newCell);
