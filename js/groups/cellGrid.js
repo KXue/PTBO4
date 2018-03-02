@@ -51,7 +51,7 @@ const cellGrid = {
         }else{
             this.grid = game.add.group();
         }
-        this.calculateMaxCellSize(map, game.width * 0.9, game.height * 0.9);
+        this.calculateMaxCellSize(map, game.width * 0.8, game.height * 0.8);
         this.cellTapSound = game.add.audio('rotateSound');
         this.populateGrid(map);
         this.rotateCells(map.rotations);
@@ -245,10 +245,10 @@ const cellGrid = {
         const positionPoint = new Phaser.Point(rowCol.col, rowCol.row);
         let connections = [];
         for(let i = 0; i < potentialConnections.length; i++){
-            const neighbourPoint = Phaser.Point.add(positionPoint, potentialConnections[i]).round();
+            const neighbourPoint = RoundPoint(Phaser.Point.add(positionPoint, potentialConnections[i]));
             if(neighbourPoint.x >= 0 && neighbourPoint.x < this.mapData.width && neighbourPoint.y >= 0 && neighbourPoint.y < this.mapData.height){
                 const neighbourCell = this.grid.getAt(getIndex(this.mapData, neighbourPoint.y, neighbourPoint.x));
-                if(this.doesCellHaveConnection(neighbourCell, Phaser.Point.negative(potentialConnections[i]).round())){
+                if (this.doesCellHaveConnection(neighbourCell, RoundPoint(Phaser.Point.negative(potentialConnections[i])))){
                     connections.push(neighbourPoint);
                 }
             }
@@ -264,7 +264,7 @@ const cellGrid = {
         let potentialConnections = [];
 
         for(let i = 0; i < cellConnections.length; i++){
-            const potentialConnection = Phaser.Point.rotate(cellConnections[i].clone(), 0, 0, cellRotation).round();
+            const potentialConnection = RoundPoint(Phaser.Point.rotate(cellConnections[i].clone(), 0, 0, cellRotation));
             potentialConnections.push(potentialConnection);
         }
         return potentialConnections;
@@ -330,4 +330,7 @@ const cellGrid = {
             this.grid.getAt(rotations[i].index).angle = rotations[i].angle;
         }
     },
+}
+function RoundPoint(point){
+    return new Phaser.Point(Math.round(point.x), Math.round(point.y))
 }

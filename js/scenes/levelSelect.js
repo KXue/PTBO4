@@ -2,6 +2,8 @@ const levelSelectState = {
     levels: [level1, level2, level3, level4], //convenience
     buttonsGroup: null,
     create: function(){
+        const titleText = this.add.text(game.width * 0.5, 5, "Choose a Level", CONSTANTS.titleStyle);
+        titleText.anchor.set(0.5, 0);
         const maxWidth = game.width * 0.9;
         const maxHeight = game.height * 0.75;
         const smallestDimension = Math.min(maxWidth / this.levels.length, maxHeight);

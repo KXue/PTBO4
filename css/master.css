@@ -13,9 +13,3 @@ body {
   justify-content: center;
   align-items: center;
 }
-canvas{
-  image-rendering: pixelated;                 /* Chrome */
-  image-rendering: -moz-crisp-edges;          /* Firefox                        */
-  image-rendering: -o-crisp-edges;            /* Opera                          */
-  -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
-}
