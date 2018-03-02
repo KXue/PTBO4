@@ -55,25 +55,20 @@ const mainState = {
         this.cellGrid.createFromMapData(this.level);
         this.cellGrid.evaluateGrid();
         cellGrid.winCallBack = ()=>{
+            this.cellGrid.setNodesEnabled(false);
             this.currentState = GAMESTATES.won;
             this.BGM.stop();
             this.winSound.play('', 0, 1.2);
             this.level.complete = true;
             winLossTransitionTimer.add(this.winLossTransitionTime, ()=>{
                 this.currentLevel+=1;
-                if(this.level.next !== null ){
-                    console.log("show win screen");
-                    this.showEndPopUp();
-                }
-                else{
-                    this.state.start('win');
-                }
+                this.showEndPopUp();
             });
             winLossTransitionTimer.start();
         };
         cellGrid.lossCallBack = ()=>{
+            this.cellGrid.setNodesEnabled(false);
             this.currentState = GAMESTATES.lost;
-            //disable cell grid
             this.BGM.stop();
             this.currentLevel = 0;
             this.lossSound.play('', 0, 3);

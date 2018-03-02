@@ -79,7 +79,11 @@ const cellGrid = {
         this.cellTapSound.destroy();
         this.cellTapSound = null;
     },
-
+    setNodesEnabled: function(enabled){
+        for(let i = 0; i < this.grid.length; i++){
+            this.grid.getAt(i).inputEnabled = enabled;
+        }
+    },
     populateGrid: function(mapData){
         if(this.grid !== null && this.grid.length > 0){
             this.grid.removeAll(true);
