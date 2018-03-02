@@ -7,7 +7,7 @@ const titleState = {
         startButton.events.onInputDown.add(this.onStartButtonPressed, this);
     },
     onStartButtonPressed: function(){
-        this.state.start('main');
+        this.state.start('select');
     }
 }
 

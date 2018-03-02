@@ -3,7 +3,9 @@ const loadState = {
         this.load.image('hand', 'assets/images/hand.png');
         this.load.image('FBI', 'assets/images/FBI.png');
         this.load.image('Roger', 'assets/images/JollyRoger.png');
-        this.load.image('back', 'assets/images/arrow_back_white_36x36.png');
+        this.load.image('back', 'assets/images/ic_arrow_back_white_48dp_1x.png');
+        this.load.image('retry', 'assets/images/ic_replay_white_48dp_1x.png');
+        this.load.image('next', 'assets/images/ic_navigate_next_white_48dp_1x.png');
         this.load.image('bitcoin', 'assets/images/bitcoin.png');
 
         this.load.image('crossTails', 'assets/images/crossTails.png');

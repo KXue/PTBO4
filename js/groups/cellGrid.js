@@ -89,7 +89,7 @@ const cellGrid = {
         const startY = (game.height - (mapData.height - 1) * this.maxCellSize) * 0.5;
 
         for(let i = 0; i < mapData.level.length; i++){
-            const rowCol = mapData.getRowCol(i);
+            const rowCol = getRowCol(mapData, i);
 
             const cellX = startX + rowCol.col * this.maxCellSize;
             const cellY = startY + rowCol.row * this.maxCellSize;
@@ -107,7 +107,7 @@ const cellGrid = {
 
 
         for(let i = 0; i < enemyIndexArray.length; i++){
-            let enemyRowCol = this.mapData.getRowCol(enemyIndexArray[i]);
+            let enemyRowCol = getRowCol(mapData, enemyIndexArray[i]);
             enemyRowCol.row *= this.maxCellSize;
             enemyRowCol.col *= this.maxCellSize;
             const enemy = game.add.image(startX + enemyRowCol.col, startY + enemyRowCol.row, 'FBI')
@@ -117,8 +117,8 @@ const cellGrid = {
             this.squareScaleActor(enemy, this.maxCellSize);
         }
 
-        let playerRowCol = this.mapData.getRowCol(this.mapData.roger);
-        let bitCoinRowCol = this.mapData.getRowCol(this.mapData.bitCoin);
+        let playerRowCol = getRowCol(mapData, this.mapData.roger);
+        let bitCoinRowCol = getRowCol(mapData, this.mapData.bitCoin);
 
         playerRowCol.row *= this.maxCellSize;
         playerRowCol.col *= this.maxCellSize;
@@ -199,7 +199,7 @@ const cellGrid = {
             visited.add(currentIndex);
             const nextPoints = this.getConnections(currentIndex);
             for(let i = 0; i < nextPoints.length; i++){
-                const nextIndex = this.mapData.getIndex(nextPoints[i].y, nextPoints[i].x);
+                const nextIndex = getIndex(this.mapData, nextPoints[i].y, nextPoints[i].x);
                 if(!visited.has(nextIndex)){
                     unFilled.push(nextIndex);
                 }
@@ -210,14 +210,13 @@ const cellGrid = {
 
     getConnections: function(index){
         const potentialConnections = this.getPotentialConnections(index);
-        const rowCol = this.mapData.getRowCol(index);
+        const rowCol = getRowCol(this.mapData, index);
         const positionPoint = new Phaser.Point(rowCol.col, rowCol.row);
         let connections = [];
-
         for(let i = 0; i < potentialConnections.length; i++){
             const neighbourPoint = Phaser.Point.add(positionPoint, potentialConnections[i]).round();
             if(neighbourPoint.x >= 0 && neighbourPoint.x < this.mapData.width && neighbourPoint.y >= 0 && neighbourPoint.y < this.mapData.height){
-                const neighbourCell = this.grid.getAt(this.mapData.getIndex(neighbourPoint.y, neighbourPoint.x));
+                const neighbourCell = this.grid.getAt(getIndex(this.mapData, neighbourPoint.y, neighbourPoint.x));
                 if(this.doesCellHaveConnection(neighbourCell, Phaser.Point.negative(potentialConnections[i]).round())){
                     connections.push(neighbourPoint);
                 }
