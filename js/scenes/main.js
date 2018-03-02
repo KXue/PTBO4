@@ -38,7 +38,7 @@ const mainState = {
     BGM:null,
     winSound: null,
     lossSound: null,
-    winLossTransitionTime: 1000,
+    winLossTransitionTime: 800,
     level: level1,
     titleText: null,
     currentState: GAMESTATES.playing,
@@ -106,7 +106,6 @@ const mainState = {
         const borderRadius = 20;
         const width = 250;
         const height = 100;
-        console.log(this.currentState);
         const endText = this.currentState == GAMESTATES.won ? 'Congrats!' : 'Too Bad!';
         const popUpRectangle = new Phaser.Rectangle(
             (game.width - width) * 0.5,
@@ -152,7 +151,6 @@ const mainState = {
             this.state.restart();
         }, this);
         resetButton.anchor.set(0.5, 1);
-        console.log(this.level.next);
         if(this.level.next != null && this.currentState == GAMESTATES.won){
             const nextButton = this.add.button(buttonWidth, 0, 'next', () => {
                 this.level = this.level.next;

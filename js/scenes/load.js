@@ -21,7 +21,6 @@ const loadState = {
 
     },
     create: function(){
-        console.log('load');
         this.state.start('title');
     }
 }
