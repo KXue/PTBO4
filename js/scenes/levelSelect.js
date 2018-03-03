@@ -1,5 +1,5 @@
 const levelSelectState = {
-    levels: [level1, level2, level3, level4], //convenience
+    levels: [level1, level2, level3, level4, level5, level6], //convenience
     buttonsGroup: null,
     create: function(){
         const titleText = this.add.text(game.width * 0.5, 5, "Choose a Level", CONSTANTS.titleStyle);
@@ -53,7 +53,7 @@ const levelSelectState = {
 
         addedButton._expandTween = game.add.tween(addedButton.scale).to({ x: addedButton.scale.x + 0.02, y: addedButton.scale.y + 0.02 }, 50, Phaser.Easing.Cubic.Out, false, 10);
         addedButton._contractTween = game.add.tween(addedButton.scale).to({ x: addedButton._scaleFactorX, y: addedButton._scaleFactorY }, 50, Phaser.Easing.Cubic.Out, false, 10);
-        
+
         addedButton.onInputOver.add(
             (cell) => {
                 addedButton._expandTween.start();
@@ -62,7 +62,7 @@ const levelSelectState = {
             (cell) => {
                 addedButton._contractTween.start();
             }, this);
-            
+
         if(interactive){
             const buttonText = this.add.text(0, 0, '' + (index + 1), CONSTANTS.titleStyle);
             buttonText.anchor.set(0.5, 0.5);

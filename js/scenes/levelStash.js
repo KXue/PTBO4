@@ -69,6 +69,47 @@ const level3 = {
 const level4 = {
     name: 'Level 2',
     level:[
+        'C', 'T', 'I', 'I', 'I',
+        'T', 'C', 'C', 'L', 'L',
+        'I', 'C', 'C', 'T', 'L',
+        'T', 'T', 'L', 'C', 'T',
+        'T', 'L', 'L', 'T', 'C'
+    ],
+    width: 5,
+    height: 5,
+    // rotation: {index, angle}
+    rotations: [{index:23,angle:90}],
+    roger: 24,
+    fBI: 6,
+    bitCoin: 0,
+    complete: false,
+    prerequisite: level3
+};
+
+const level5 = {
+    name: 'Level 3',
+    level:[
+        'C', 'T', 'C', 'C', 'C', 'L',
+        'L', 'T', 'L', 'C', 'L', 'C',
+        'C', 'L', 'C', 'L', 'L', 'C',
+        'C', 'T', 'L', 'L', 'L', 'C',
+        'C', 'L', 'C', 'L', 'L', 'L',
+        'C', 'C', 'C', 'C', 'L', 'C'
+    ],
+    width: 6,
+    height: 6,
+    // rotation: {index, angle}
+    rotations: [{index:8,angle:90}],
+    roger: 35,
+    fBI: [4, 24],
+    bitCoin: 0,
+    complete: false,
+    prerequisite: level4
+};
+
+const level6 = {
+    name: 'Secret',
+    level:[
         'C', 'T', 'L', 'T', 'C','C', 'C', 'C', 'C', 'C',
         'L', 'T', 'L', 'I', 'L','L', 'C', 'T', 'L', 'C',
         'T', 'L', 'C', 'T', 'L','C', 'T', 'L', 'T', 'C',
@@ -88,6 +129,5 @@ const level4 = {
     fBI: 99,
     bitCoin: 66,
     complete: false,
-    prerequisite: level3
+    prerequisite: level5
 };
-
